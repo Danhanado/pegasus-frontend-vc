@@ -20,7 +20,7 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
-    color: "#222"
+    color: "black"
     anchors.fill: parent
 
     property real progress: 0
@@ -29,10 +29,10 @@ Rectangle {
 
     Behavior on progress { NumberAnimation {} }
 
-
+/*
     Image {
         id: logo
-        source: "assets/logo.png"
+        source: "assets/vc_logo.png"
         width: Math.min(parent.width, parent.height)
         fillMode: Image.PreserveAspectFit
         verticalAlignment: Image.AlignBottom
@@ -41,76 +41,55 @@ Rectangle {
         anchors.top: parent.top
         anchors.bottom: parent.verticalCenter
         anchors.bottomMargin: vpx(-45)
-    }
+    }*/
 
     Rectangle {
         id: progressRoot
 
-        property int padding: vpx(5)
+        property int padding: 0
 
-        width: logo.width * 0.94
-        height: vpx(30)
-        radius: vpx(10)
-        color: "#181818"
+        //width: logo.width * 0.94
+        height: 21
+        radius: 10
+        color: "#3f3f3f"
 
-        anchors.top: logo.bottom
-        anchors.topMargin: height * 1.0
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 200
+        anchors.bottomMargin: 100
         anchors.horizontalCenter: parent.horizontalCenter
-        clip: true
+        //clip: true
 
         Image {
-            source: "assets/pbar.png"
-
-            property int animatedWidth: 0
-            width: parent.width + animatedWidth
-            height: parent.height - progressRoot.padding * 2
-
-            fillMode: Image.Tile
+            source: "assets/vcload_center.png"
+            //opacity: 0.5
             horizontalAlignment: Image.AlignLeft
 
             anchors.verticalCenter: parent.verticalCenter
+            anchors.left: loadleft.right
             anchors.right: parent.right
-            anchors.rightMargin: parent.width * (1.0 - root.progress)
+            anchors.rightMargin: Math.min(((parent.width) * (1.0 - root.progress)), (parent.width-60))
 
-            SequentialAnimation on animatedWidth {
-                loops: Animation.Infinite
-                PropertyAnimation { duration: 500; to: vpx(68) }
-                PropertyAnimation { duration: 0; to: 0 }
-            }
 
 
             Image {
-                source: "assets/pbar-right.png"
-                anchors.top: parent.top
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
+                source: "assets/vcload_right.png"
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.right
+                //anchors.right: parent.right
                 fillMode: Image.PreserveAspectFit
             }
         }
 
         Image {
-            source: "assets/pbar-left.png"
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            id: loadleft
+            source: "assets/vcload_left.png"
+            anchors.verticalCenter: parent.verticalCenter
             anchors.left: parent.left
             fillMode: Image.PreserveAspectFit
         }
-        Image {
-            source: "assets/pbar-right.png"
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.right: parent.right
-            fillMode: Image.PreserveAspectFit
-        }
-        Rectangle {
-            // inner border above the image
-            anchors.fill: parent
-            color: "transparent"
 
-            radius: vpx(10)
-            border.width: parent.padding
-            border.color: parent.color
-        }
     }
 
     Text {

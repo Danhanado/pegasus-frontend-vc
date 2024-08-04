@@ -8,3 +8,6 @@ RESOURCES += \
     ./frontend.qrc \
     ../qmlutils/qmlutils.qrc \
     ../themes/themes.qrc
+
+DISTFILES += \
+    assets/vc_logo.png

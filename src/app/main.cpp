@@ -57,6 +57,8 @@ int main(int argc, char *argv[])
 
     QCoreApplication::addLibraryPath(QStringLiteral("lib/plugins"));
     QCoreApplication::addLibraryPath(QStringLiteral("lib"));
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES, true);
+
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     QGuiApplication app(argc, argv);

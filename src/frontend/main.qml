@@ -17,7 +17,7 @@
 
 import "qrc:/qmlutils" as PegasusUtils
 import QtQuick 2.8
-import QtQuick.Window 2.2
+import QtQuick.Window 2.15
 
 
 Window {
@@ -25,12 +25,12 @@ Window {
     visible: true
     width: 1280
     height: 720
-    title: "Pegasus"
+    title: "VirtuaCadeGUI"
     color: "#000"
 
     visibility: Internal.settings.fullscreen
                 ? Window.FullScreen : Window.AutomaticVisibility
-
+    //flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowFullScreen;
     onClosing: {
         theme.source = "";
         Internal.system.quit();
