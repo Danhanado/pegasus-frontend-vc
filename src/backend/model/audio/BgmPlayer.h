@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QTimer>
 
 #include "../../../../thirdparty/miniaudio/miniaudio.h"
 
@@ -14,12 +15,14 @@ class BgmPlayer : public QObject
 public:
     explicit BgmPlayer(QObject* parent = nullptr);
     ~BgmPlayer();
+
     bool isPlaying();
     Q_INVOKABLE void loadTrack(const QUrl& filePath, float volume);
     Q_INVOKABLE void playMusic();
     Q_INVOKABLE void stopMusic();
     Q_INVOKABLE void setMusicVolume(float volume);
     Q_INVOKABLE void fadeOutMusic(int duration);
+
     Q_INVOKABLE void suspendEngine();
     Q_INVOKABLE void resumeEngine();
 
@@ -35,13 +38,17 @@ private:
 
     QString m_bgmPath;
     const char* m_bgmFile;
+    QTimer m_fadeTimer;
+    bool m_isFadingOut = false;
 
     bool m_engineReady;
     bool m_bgmReady;
     bool m_playing;
 
-    float m_bgmVolume;
+    float m_bgmVolume = 1.0f;
     int m_loopStart;
+    int m_loopEnd;
+    int m_loopLength;
 
-    void setOggLoopPoint(const char* fileName, ma_decoder* decoder);
+    void setOggLoop(const char* fileName, ma_decoder* decoder);
 };
