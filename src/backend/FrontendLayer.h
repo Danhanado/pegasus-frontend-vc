@@ -17,6 +17,7 @@
 
 #pragma once
 
+#include "model/audio/BgmPlayer.h"
 #include <QObject>
 
 class QQmlApplicationEngine;
@@ -37,7 +38,7 @@ class FrontendLayer : public QObject {
     Q_OBJECT
 
 public:
-    explicit FrontendLayer(QObject* const api_public, QObject* const api_private, QObject* const audio, QObject* parent = nullptr);
+    explicit FrontendLayer(QObject* const api_public, QObject* const api_private, BgmPlayer* const audio, QObject* parent = nullptr);
 
     void rebuild();
     void teardown();
@@ -53,6 +54,6 @@ signals:
 private:
     QObject* const m_api_public;
     QObject* const m_api_private;
-    QObject* const m_audio;
+    BgmPlayer* const m_audio;
     QQmlApplicationEngine* m_engine;
 };

@@ -26,9 +26,9 @@ BgmPlayer::BgmPlayer(QObject* parent)
         connect(qApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
             if (!m_engineReady){return;}
             if (state == Qt::ApplicationActive) {
-               //ma_engine_start(&m_engine);
+               ma_engine_start(&m_engine);
             } else {
-                //ma_engine_stop(&m_engine);
+               ma_engine_stop(&m_engine);
             }
         });
     }
@@ -113,6 +113,7 @@ void BgmPlayer::loadTrack(const QUrl& filePath, float volume){
 
 void BgmPlayer::playMusic(){
     if (!m_engineReady || !m_bgmReady){return;}
+    ma_sound_seek_to_pcm_frame(&m_music, 0);
     m_fadeTimer.stop();
     if (ma_sound_start(&m_music) != MA_SUCCESS) {
         qWarning() << "miniaudio: failed to start music:" << m_bgmPath;
@@ -179,7 +180,6 @@ void BgmPlayer::setOggLoop(const char* fileName, ma_decoder* decoder){
             loopLength = tagValue;
             hasLoopLength = true;
         }
-
         if (hasLoopStart && (hasLoopEnd || hasLoopLength)){break;} // Only needs START + END or LENGTH
     }
 
@@ -195,7 +195,6 @@ void BgmPlayer::setOggLoop(const char* fileName, ma_decoder* decoder){
     }else{
         ma_data_source_set_loop_point_in_pcm_frames(decoder, loopStart, loopEnd);
     }
-
 }
 
 void BgmPlayer::suspendEngine(){

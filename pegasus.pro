@@ -6,7 +6,6 @@ lessThan(QT_MAJOR_VERSION, $${REQ_QT_MAJOR}) | equals(QT_MAJOR_VERSION, $${REQ_Q
     error("This project requires at least Qt $${REQ_QT_MAJOR}.$${REQ_QT_MINOR} or newer")
 }
 
-
 TEMPLATE = subdirs
 SUBDIRS += src thirdparty
 OTHER_FILES += .qmake.conf

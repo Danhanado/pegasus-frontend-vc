@@ -46,7 +46,7 @@ QNetworkAccessManager* DiskCachedNAMFactory::create(QObject* parent)
 } // namespace
 
 
-FrontendLayer::FrontendLayer(QObject* const api_public, QObject* const api_private, QObject* const audio, QObject* parent)
+FrontendLayer::FrontendLayer(QObject* const api_public, QObject* const api_private, BgmPlayer* const audio, QObject* parent)
     : QObject(parent)
     , m_api_public(api_public)
     , m_api_private(api_private)
@@ -77,6 +77,7 @@ void FrontendLayer::rebuild()
     m_engine->rootContext()->setContextProperty(QStringLiteral("Internal"), m_api_private);
     m_engine->rootContext()->setContextProperty(QStringLiteral("bgmPlayer"), m_audio);
     m_engine->load(QUrl(QStringLiteral("qrc:/frontend/main.qml")));
+    m_audio->resumeEngine();
 
     emit rebuildComplete();
 }
@@ -89,6 +90,7 @@ void FrontendLayer::teardown()
     connect(m_engine, &QQmlApplicationEngine::destroyed,
             this, &FrontendLayer::teardownComplete);
 
+    m_audio->suspendEngine();
     m_engine->deleteLater();
     m_engine = nullptr;
 }
@@ -96,7 +98,6 @@ void FrontendLayer::teardown()
 void FrontendLayer::bringToFront()
 {
     Q_ASSERT(m_engine);
-
     const auto root_objects = m_engine->rootObjects();
     if (root_objects.isEmpty())
         return;
@@ -107,10 +108,13 @@ void FrontendLayer::bringToFront()
 
     window->raise();
     window->requestActivate();
+    m_audio->resumeEngine();
+
 }
 
 void FrontendLayer::clearCache()
 {
+    m_audio->stopMusic();
     Q_ASSERT(m_engine);
     m_engine->clearComponentCache();
 }
