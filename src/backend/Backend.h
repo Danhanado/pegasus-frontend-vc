@@ -25,7 +25,7 @@ class FrontendLayer;
 class ProcessLauncher;
 class ProviderManager;
 class QTimer;
-
+class BgmPlayer;
 
 namespace backend {
 
@@ -51,6 +51,7 @@ private:
     ProcessLauncher* m_launcher;
     ProviderManager* m_providerman;
     QTimer* m_hide_timer;
+    BgmPlayer* m_audio;
 
     void onScanRequested(bool force_refresh = false);
     void onScanFinished();

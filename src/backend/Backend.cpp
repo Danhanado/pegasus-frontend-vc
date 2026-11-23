@@ -28,6 +28,7 @@
 
 // For type registration
 #include "model/Api.h"
+#include "model/audio/BgmPlayer.h"
 #include "model/keys/Key.h"
 #include "model/gaming/Assets.h"
 #include "model/gaming/GameFile.h"
@@ -158,6 +159,7 @@ Backend::~Backend()
     delete m_hide_timer;
     delete m_launcher;
     delete m_frontend;
+    delete m_audio;
     delete m_providerman;
     delete m_api_private;
     delete m_api_public;
@@ -183,7 +185,10 @@ Backend::Backend(const CliArgs& args)
 
     m_api_public = new model::ApiObject(args);
     m_api_private = new model::Internal(args);
-    m_frontend = new FrontendLayer(m_api_public, m_api_private);
+
+    m_audio = new BgmPlayer(); // Dan
+
+    m_frontend = new FrontendLayer(m_api_public, m_api_private, m_audio);
     m_launcher = new ProcessLauncher();
     m_providerman = new ProviderManager();
 
@@ -309,7 +314,7 @@ void Backend::onProcessLaunched()
     else {
         Log::info(LOGMSG("Keeping the frontend visible while the program runs"));
     }
-
+    //m_audio->suspendEngine();
     m_api_private->gamepad().stop();
 }
 
