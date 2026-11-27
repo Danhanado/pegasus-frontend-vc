@@ -2,8 +2,6 @@ target_sources(pegasus-backend PRIVATE
     Api.cpp
     Api.h
     ObjectListModel.h
-    audio/AudioManager.cpp
-    audio/AudioManager.h
     audio/BgmPlayer.cpp
     audio/BgmPlayer.h
     audio/miniaudio_impl.cpp
